@@ -1,11 +1,16 @@
-ascii-art
+(ascii-art)
 Prepare
-npm install
-or
 
+1)npm install
+or
 npm ci
+
 Start
+
 Dev
-npm run dev
+
+2)npm run dev
+
 Prod
-npm start
+
+3)npm start
