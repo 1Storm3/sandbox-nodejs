@@ -13,12 +13,12 @@ if (args.length === 3 && args.every(num => typeof num === 'number')) {
     if (desc > 0) {
         let x1 = (-b - Math.sqrt(desc)) / 2 * a;
         let x2 = (-b + Math.sqrt(desc)) / 2 * a;
-        console.log('Корень х1 =', x1, 'Корень х2 =', x2)
+        stdout.write(`Корень х1 =' ${x1}, 'Корень х2 =', ${x2}`)
         process.exit(0);
     } else if (desc === 0) {
         let x1 = -b / 2 * a;
         let x2 = x1;
-        console.log('Корень х1 =', x1, 'Корень х2 =', x2)
+        stdout.write(`Корень х1 =' ${x1}, 'Корень х2 =', ${x2}`)
         process.exit(0);
     } else {
         stderr.write('Корней нет,ну или точнее сказать есть комплексные,но это не входит в условие задачи)')
