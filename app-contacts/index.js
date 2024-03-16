@@ -1,28 +1,32 @@
 import express from 'express';
 import DatabaseService from "./database-service.js";
 import bodyParser from "body-parser";
+import cors from "cors";
+
 const db = new DatabaseService();
 const app = express();
 
-app.use(express.static('public'));
+app.use(express.static('public/build'));
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 // parse application/json
 app.use(bodyParser.json());
 
-const port = 3000;
+app.use(cors({origin: 'http://localhost:3000'}));
+
+const port = 3006;
 app.get('/api/v1.0/contacts', (req, res) => {
     const allData = db.getAll();
-    setTimeout(()=>{
+    setTimeout(() => {
         res.send(allData);
-    }, 3000);
+    }, 1000);
 });
 app.get('/api/v1.0/contacts/:id', (req, res) => {
     const id = Number(req.params.id);
 
-    if(!id){
+    if (!id) {
         res.status(500);
         res.send({error: 'Error 500'});
         return;
@@ -30,7 +34,7 @@ app.get('/api/v1.0/contacts/:id', (req, res) => {
 
     const oneItem = db.getOne(id);
 
-    if(!oneItem){
+    if (!oneItem) {
         res.status(404);
         res.send({error: `Item with id=${id} not found`});
         return;
@@ -40,9 +44,9 @@ app.get('/api/v1.0/contacts/:id', (req, res) => {
 
 app.post('/api/v1.0/contacts/', (req, res) => {
 
-    const data= req.body;
+    const data = req.body;
 
-    if(!db.create(data)) {
+    if (!db.create(data)) {
         res.status(500);
         res.send({error: `Error 500 when creating item with id ${id}`});
         return;
@@ -56,7 +60,7 @@ app.patch('/api/v1.0/contacts/:id', (req, res) => {
 
     const id = Number(req.params.id);
 
-    if(!id){
+    if (!id) {
         res.status(500);
         res.send({error: 'Error 500'});
         return;
@@ -64,15 +68,15 @@ app.patch('/api/v1.0/contacts/:id', (req, res) => {
 
     const oneItem = db.getOne(id);
 
-    if(!oneItem){
+    if (!oneItem) {
         res.status(404);
         res.send({error: `Item with id=${id} not found`});
         return;
     }
 
-    const data= req.body;
+    const data = req.body;
 
-    if(!db.update(id, data)) {
+    if (!db.update(id, data)) {
         res.status(500);
         res.send({error: `Error 500 when updating item with id ${id}`});
         return;
@@ -84,8 +88,7 @@ app.patch('/api/v1.0/contacts/:id', (req, res) => {
 
 app.delete('/api/v1.0/contacts/:id', (req, res) => {
     const id = Number(req.params.id);
-
-    if(!id){
+    if (!id) {
         res.status(500);
         res.send({error: 'Error 500'});
         return;
@@ -93,13 +96,13 @@ app.delete('/api/v1.0/contacts/:id', (req, res) => {
 
     const oneItem = db.getOne(id);
 
-    if(!oneItem){
+    if (!oneItem) {
         res.status(404);
         res.send({error: `Item with id=${id} not found`});
         return;
     }
 
-    if(db.delete(id)) {
+    if (db.delete(id)) {
         res.status(204);
         res.end();
     } else {
